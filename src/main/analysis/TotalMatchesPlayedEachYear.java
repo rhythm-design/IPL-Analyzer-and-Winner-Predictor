@@ -1,11 +1,11 @@
 package src.main.analysis;
 
-import lombok.Setter;
-
 import java.util.List;
 public class TotalMatchesPlayedEachYear {
+    public static void setCricketMatches(final List<String> cricketMatches) {
+        TotalMatchesPlayedEachYear.cricketMatches = cricketMatches;
+    }
 
-    @Setter
     private static List<String> cricketMatches;
 
     static int[] matchesPlayedPerYear;
