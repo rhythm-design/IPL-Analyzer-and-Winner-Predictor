@@ -1,10 +1,10 @@
 package src.main;
 
+import src.main.analysis.ExtraRunConcededByEachTeamIn2016;
 import src.main.analysis.TotalMatchesPlayedEachYear;
 import src.main.analysis.TotalMatchesWonByEachTeam;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,10 +27,11 @@ public class IPLAnalyzer {
         }
         TotalMatchesPlayedEachYear.setCricketMatches(matches.subList(1,matches.size()));
         TotalMatchesWonByEachTeam.setCricketMatches(matches.subList(1,matches.size()));
+        ExtraRunConcededByEachTeamIn2016.setBallDeliveries(deliveries);
 //        int ans = TotalMatchesPlayedEachYear.totalMatchInYear(2008);
         System.out.println(TotalMatchesPlayedEachYear.totalMatchInYear(2008));
         System.out.println(TotalMatchesPlayedEachYear.totalMatchInYear(2009));
         System.out.println(TotalMatchesWonByEachTeam.cricketMatchWonByTeam("Royal Challengers Bangalore"));
-
+        System.out.println(ExtraRunConcededByEachTeamIn2016.getExtraRunsIn2016ForTeam("Royal Challengers Bangalore"));
     }
 }
