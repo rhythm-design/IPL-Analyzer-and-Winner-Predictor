@@ -1,6 +1,7 @@
 package src.main;
 
 import src.main.analysis.ExtraRunConcededByEachTeamIn2016;
+import src.main.analysis.TopSortedEconomicalBowlersIn2015;
 import src.main.analysis.TotalMatchesPlayedEachYear;
 import src.main.analysis.TotalMatchesWonByEachTeam;
 
@@ -33,5 +34,7 @@ public class IPLAnalyzer {
         System.out.println(TotalMatchesPlayedEachYear.totalMatchInYear(2009));
         System.out.println(TotalMatchesWonByEachTeam.cricketMatchWonByTeam("Royal Challengers Bangalore"));
         System.out.println(ExtraRunConcededByEachTeamIn2016.getExtraRunsIn2016ForTeam("Royal Challengers Bangalore"));
+        TopSortedEconomicalBowlersIn2015.setBallDeliveries(deliveries);
+        System.out.println(TopSortedEconomicalBowlersIn2015.getTopNEconomyBowlers(1));
     }
 }
