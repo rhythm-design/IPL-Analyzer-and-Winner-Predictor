@@ -3,12 +3,7 @@ package src.main.analysis;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
-public class TotalMatchesPlayedEachYear {
-    public static void setCricketMatches(final List<String> cricketMatches) {
-        TotalMatchesPlayedEachYear.cricketMatches = cricketMatches;
-    }
-
-    private static List<String> cricketMatches;
+public class TotalMatchesPlayedEachYear extends IPLData{
 
     static int[] matchesPlayedPerYear;
 

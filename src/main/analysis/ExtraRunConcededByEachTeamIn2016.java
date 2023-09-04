@@ -6,15 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ExtraRunConcededByEachTeamIn2016 {
+public class ExtraRunConcededByEachTeamIn2016 extends IPLData{
 
-    final static String[] teams = {"Mumbai Indians", "Sunrisers Hyderabad", "Pune Warriors", "Rajasthan Royals", "Royal Challengers Bangalore", "Kolkata Knight Riders", "Gujarat Lions", "Rising Pune Supergiant", "Kochi Tuskers Kerala", "Kings XI Punjab", "Deccan Chargers", "Delhi Daredevils", "Rising Pune Supergiants", "Chennai Super Kings"};
-
-    private static List<String> ballDeliveries;
-
-    public static void setBallDeliveries(List<String> ballDeliveries) {
-        ExtraRunConcededByEachTeamIn2016.ballDeliveries = ballDeliveries;
-    }
     private static Map<String,Integer> extraRunByTeams;
 
     public static String extraRunsIn2016ForTeam(String team){

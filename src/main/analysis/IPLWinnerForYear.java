@@ -3,17 +3,10 @@ package src.main.analysis;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
-public class IPLWinnerForYear {
-
-    static List<String> cricketMatches;
+public class IPLWinnerForYear extends IPLData{
 
     static int[] finalMatchIds;
-
-    public static void setCricketMatches(List<String> cricketMatches) {
-        IPLWinnerForYear.cricketMatches = cricketMatches;
-    }
 
     private static String iplWinner(int yearWinner){
         // year to id

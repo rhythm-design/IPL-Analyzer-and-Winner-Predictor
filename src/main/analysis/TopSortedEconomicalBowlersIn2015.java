@@ -9,14 +9,8 @@ import java.util.Map;
 import java.util.Collections;
 
 
-public class TopSortedEconomicalBowlersIn2015 {
+public class TopSortedEconomicalBowlersIn2015 extends IPLData{
     //518-576
-
-    private static List<String> ballDeliveries;
-
-    public static void setBallDeliveries(List<String> ballDeliveries) {
-        TopSortedEconomicalBowlersIn2015.ballDeliveries = ballDeliveries;
-    }
     static Map<String,int[]> bowlerAnalysis;
 
     static List<Bowler> sortedBowlersEconomies;

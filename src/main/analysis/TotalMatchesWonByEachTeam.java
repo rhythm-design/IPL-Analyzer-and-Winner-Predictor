@@ -9,15 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TotalMatchesWonByEachTeam {
+public class TotalMatchesWonByEachTeam extends IPLData{
 
-    final static String[] teams = {"Mumbai Indians", "Sunrisers Hyderabad", "Pune Warriors", "Rajasthan Royals", "Royal Challengers Bangalore", "Kolkata Knight Riders", "Gujarat Lions", "Rising Pune Supergiant", "Kochi Tuskers Kerala", "Kings XI Punjab", "Deccan Chargers", "Delhi Daredevils", "Rising Pune Supergiants", "Chennai Super Kings"};
-
-    static List<String> cricketMatches;
-
-    public static void setCricketMatches(final List<String> cricketMatches) {
-        TotalMatchesWonByEachTeam.cricketMatches = cricketMatches;
-    }
     static Map<String,Integer> matchesWonByEachTeam;
 
     static Map<String,Integer> matchesPlayedByEachTeam;

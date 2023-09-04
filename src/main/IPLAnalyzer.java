@@ -24,13 +24,8 @@ public class IPLAnalyzer {
         while ((line = br.readLine()) != null) {
             deliveries.add(line);
         }
-        TotalMatchesPlayedEachYear.setCricketMatches(matches.subList(1,matches.size()));
-        TotalMatchesWonByEachTeam.setCricketMatches(matches.subList(1,matches.size()));
-        ExtraRunConcededByEachTeamIn2016.setBallDeliveries(deliveries);
-        TopSortedEconomicalBowlersIn2015.setBallDeliveries(deliveries);
-        TopNBatsmanWithMostRuns.setBallDeliveries(deliveries.subList(1,deliveries.size()));
-        IPLWinnerForYear.setCricketMatches(matches.subList(1,matches.size()));
-//        System.out.println(IPLWinnerForYear.iplWinner(2010));
+        IPLData.setCricketMatches(matches.subList(1,matches.size()));
+        IPLData.setBallDeliveries(deliveries);
         br = new BufferedReader(new InputStreamReader(System.in));
 
         while(true){

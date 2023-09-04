@@ -7,13 +7,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class TopNBatsmanWithMostRuns {
-
-    public static void setBallDeliveries(List<String> ballDeliveries) {
-        TopNBatsmanWithMostRuns.ballDeliveries = ballDeliveries;
-    }
-
-    static List<String> ballDeliveries;
+public class TopNBatsmanWithMostRuns extends IPLData{
 
     static Map<String,Integer> cricketersRuns;
 
@@ -24,7 +18,8 @@ public class TopNBatsmanWithMostRuns {
         if(cricketersRuns == null){
             cricketersRuns = new HashMap<>();
             batsmanSortedAccordingToRuns = new ArrayList<>();
-            for(String ballDelivery: ballDeliveries){
+            for(int i = 1; i < ballDeliveries.size(); i++){
+                String ballDelivery = ballDeliveries.get(i);
                 String ballDetails[] = ballDelivery.split(",");
                 cricketersRuns.put(ballDetails[6], cricketersRuns.getOrDefault(ballDetails[6],0) + Integer.parseInt(ballDetails[15]));
             }
