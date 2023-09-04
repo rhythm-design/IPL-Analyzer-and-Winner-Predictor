@@ -20,9 +20,7 @@ public class IPLWinnerForYear extends IPLData{
                 finalMatchIds[year - 2008] = Math.max(id, finalMatchIds[year - 2008]);
             }
         }
-        System.out.println(Arrays.toString(finalMatchIds));
         int matchId = finalMatchIds[yearWinner - 2008];
-        System.out.println(matchId);
         return cricketMatches.get(matchId - 1).split(",")[10];
     }
 
