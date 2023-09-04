@@ -29,6 +29,8 @@ public class IPLAnalyzer {
         ExtraRunConcededByEachTeamIn2016.setBallDeliveries(deliveries);
         TopSortedEconomicalBowlersIn2015.setBallDeliveries(deliveries);
         TopNBatsmanWithMostRuns.setBallDeliveries(deliveries.subList(1,deliveries.size()));
+        IPLWinnerForYear.setCricketMatches(matches.subList(1,matches.size()));
+//        System.out.println(IPLWinnerForYear.iplWinner(2010));
         br = new BufferedReader(new InputStreamReader(System.in));
 
         while(true){
@@ -37,7 +39,8 @@ public class IPLAnalyzer {
                     "(2) Number of matches won of all teams over all the years of IPL.\n" +
                     "(3) For the year 2016 get the extra runs conceded per team.\n" +
                     "(4) For the year 2015 get the top economical bowlers.\n" +
-                    "(5) Top N batsman with most runs.");
+                    "(5) Top N batsman with most runs. \n" +
+                    "(6) IPL Winner of the year");
             String input = br.readLine();
             switch (input) {
                 case "1":
@@ -54,6 +57,9 @@ public class IPLAnalyzer {
                     break;
                 case "5":
                     TopNBatsmanWithMostRuns.getTopNBatsman(br);
+                    break;
+                case "6":
+                    IPLWinnerForYear.getIPLWinnerForYear(br);
                     break;
                 default:
                     System.out.println("Exiting program.");

@@ -39,22 +39,22 @@ public class ExtraRunConcededByEachTeamIn2016 {
 
     public static void getExtraRunsIn2016ForTeam(BufferedReader br) throws IOException {
         while (true) {
-            System.out.println("Enter the number aligned to the team or enter 9999 to return to previous menu");
+            System.out.println("Enter the number aligned to the team or press [p] to return to previous menu");
             printTeams();
             String input = br.readLine();
             try{
                 int teamIdx = Integer.parseInt(input);
                 if(teamIdx >=1 && teamIdx <=14){
                     System.out.println(extraRunsIn2016ForTeam(teams[teamIdx - 1]));
-                }else if(teamIdx == 9999){
-                    return;
                 }else{
-                    System.out.println("Please Enter the Number between 1 to 14 inclusively or press q to exit program");
+                    System.out.println("Please Enter the Number between 1 to 14 inclusively or press [q] to exit program");
                 }
             }catch(NumberFormatException e){
                 if(input.equals("q") || input.equals("Q")){
                     System.out.println("Exited Program");
                     System.exit(0);
+                }else if(input.equals("p") || input.equals("P")){
+                    return;
                 }else{
                     System.out.println("Either enter number or press q to exit");
                 }

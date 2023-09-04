@@ -30,15 +30,13 @@ public class TopSortedEconomicalBowlersIn2015 {
     public static void getTopNEconomyBowlers(BufferedReader br) throws IOException {
         while (true) {
             System.out.println("How much top economical bowlers you want to get?");
-            System.out.println("You can also enter 9999 to go to previous menu and q to exit program");
+            System.out.println("You can also press [p] to go to previous menu and [q] to exit program");
             String input = br.readLine();
 
             try{
                 int n = Integer.parseInt(input);
                 if(n >=1 && n <=100){
                     System.out.println("Top " + n + "economical bowlers -> "+topNEconomyBowlers(n));
-                }else if(n == 9999){
-                    return;
                 }else{
                     System.out.println("Not a valid year input between 1 to 100 inclusively, please try again");
                 }
@@ -46,6 +44,8 @@ public class TopSortedEconomicalBowlersIn2015 {
                 if(input.equals("q") || input.equals("Q")){
                     System.out.println("Exited Program");
                     System.exit(0);
+                }else if(input.equals("p") || input.equals("P")){
+                    return;
                 }else{
                     System.out.println("Either enter number or press q to exit");
                 }
