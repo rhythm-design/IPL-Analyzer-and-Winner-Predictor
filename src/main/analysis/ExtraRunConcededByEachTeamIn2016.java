@@ -1,10 +1,15 @@
 package src.main.analysis;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ExtraRunConcededByEachTeamIn2016 {
+
+    final static String[] teams = {"Mumbai Indians", "Sunrisers Hyderabad", "Pune Warriors", "Rajasthan Royals", "Royal Challengers Bangalore", "Kolkata Knight Riders", "Gujarat Lions", "Rising Pune Supergiant", "Kochi Tuskers Kerala", "Kings XI Punjab", "Deccan Chargers", "Delhi Daredevils", "Rising Pune Supergiants", "Chennai Super Kings"};
+
     private static List<String> ballDeliveries;
 
     public static void setBallDeliveries(List<String> ballDeliveries) {
@@ -12,9 +17,8 @@ public class ExtraRunConcededByEachTeamIn2016 {
     }
     private static Map<String,Integer> extraRunByTeams;
 
-    public static int getExtraRunsIn2016ForTeam(String team){
+    public static String extraRunsIn2016ForTeam(String team){
         // get match ids for year 2016     636 to 577
-//        System.out.println(ballDeliveries.get(0).split(",")[16]);
         if(extraRunByTeams == null){
             extraRunByTeams = new HashMap<>();
             int index = ballDeliveries.size() - 1;
@@ -30,7 +34,65 @@ public class ExtraRunConcededByEachTeamIn2016 {
                 index--;
             }
         }
-        System.out.println(extraRunByTeams);
-        return extraRunByTeams.get(team);
+        return "Extra runs conceded by team " + team + " is: " + extraRunByTeams.get(team);
+    }
+
+    public static void getExtraRunsIn2016ForTeam(BufferedReader br) throws IOException {
+        while (true) {
+            System.out.println("Enter the number aligned to the team or enter 9999 to return to previous menu");
+            printTeams();
+            String input = br.readLine();
+            try{
+                int teamIdx = Integer.parseInt(input);
+                if(teamIdx >=1 && teamIdx <=14){
+                    System.out.println(extraRunsIn2016ForTeam(teams[teamIdx - 1]));
+                }else if(teamIdx == 9999){
+                    return;
+                }else{
+                    System.out.println("Please Enter the Number between 1 to 14 inclusively or press q to exit program");
+                }
+            }catch(NumberFormatException e){
+                if(input.equals("q") || input.equals("Q")){
+                    System.out.println("Exited Program");
+                    System.exit(0);
+                }else{
+                    System.out.println("Either enter number or press q to exit");
+                }
+            }
+        }
+    }
+
+    private static void printTeams(){
+        int columns = 4; // Number of columns per row
+
+        // Calculate the number of rows required
+        int rows = (int) Math.ceil((double) teams.length / columns);
+
+        // Find the maximum width for each index
+        int maxIndexWidth = String.valueOf(teams.length).length();
+
+        // Find the maximum width for each team name
+        int maxColumnWidth = 0;
+        for (String team : teams) {
+            maxColumnWidth = Math.max(maxColumnWidth, team.length());
+        }
+
+        // Display the array with each string's index (without space before single-digit numbers)
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                int index = i * columns + j;
+                if (index < teams.length) {
+                    String team = teams[index];
+                    String formattedIndex = String.format("(%0" + maxIndexWidth + "d)", index + 1);
+                    System.out.printf("%s %-" + (maxColumnWidth + 2) + "s", formattedIndex, team);
+
+                    // Add a separator between columns
+                    if (j < columns - 1) {
+                        System.out.print("\t");
+                    }
+                }
+            }
+            System.out.println(); // Move to the next row
+        }
     }
 }
