@@ -13,45 +13,56 @@ import java.util.Arrays;
 
 public class IPLAnalyzer {
 
-    private static final int MATCH_ID = 0;
-    private static final int MATCH_YEAR = 1;
-    private static final int MATCH_TEAM1 = 4;
-    private static final int MATCH_TEAM2 = 5;
-    private static final int MATCH_WINNER_TEAM = 10;
+    private static IPLAnalyzer iplAnalyzer;
 
-    private static final int DELIVERY_MATCH_ID = 0;
-    private static final int DELIVERY_TEAM1 = 2;
-    private static final int DELIVERY_TEAM2 = 3;
-    private static final int DELIVERY_BATSMAN = 6;
-    private static final int DELIVERY_WIDE_RUNS = 10;
-    private static final int DELIVERY_NOBALL_RUNS = 13;
-    private static final int DELIVERY_BYE_RUNS = 11;
-    private static final int DELIVERY_LEGBYE_RUNS = 12;
-    private static final int DELIVERY_BATSMAN_RUNS = 15;
-    private static final int DELIVERY_EXTRA_RUNS = 16;
-    private static final int DELIVERY_BOWLER_NAME = 8;
+    private IPLAnalyzer(){};
 
-    private static int[] matchesPlayedPerYear;
+    public static IPLAnalyzer getIPLAnalyzerInstance(){
+        if(iplAnalyzer == null){
+            iplAnalyzer = new IPLAnalyzer();
+        }
+        return iplAnalyzer;
+    }
+    private final int MATCH_ID = 0;
+    private final int MATCH_YEAR = 1;
+    private final int MATCH_TEAM1 = 4;
+    private final int MATCH_TEAM2 = 5;
+    private final int MATCH_WINNER_TEAM = 10;
 
-    private static Map<String,Integer> matchesWonByEachTeam;
-    private static Map<String,Integer> matchesPlayedByEachTeam;
+    private final int DELIVERY_MATCH_ID = 0;
+    private final int DELIVERY_TEAM1 = 2;
+    private final int DELIVERY_TEAM2 = 3;
+    private final int DELIVERY_BATSMAN = 6;
+    private final int DELIVERY_WIDE_RUNS = 10;
+    private final int DELIVERY_NOBALL_RUNS = 13;
+    private final int DELIVERY_BYE_RUNS = 11;
+    private final int DELIVERY_LEGBYE_RUNS = 12;
+    private final int DELIVERY_BATSMAN_RUNS = 15;
+    private final int DELIVERY_EXTRA_RUNS = 16;
+    private final int DELIVERY_BOWLER_NAME = 8;
 
-    private static Map<String,Integer> extraRunByTeams;
+    private int[] matchesPlayedPerYear;
 
-    static List<Map.Entry<String,Integer>> batsmanSortedAccordingToRuns;
+    private Map<String,Integer> matchesWonByEachTeam;
+    private Map<String,Integer> matchesPlayedByEachTeam;
 
-    static int[] finalMatchIds;
+    private Map<String,Integer> extraRunByTeams;
 
-    static List<Map.Entry<String,Double>> bowlerDataSorted;
+    private List<Map.Entry<String,Integer>> batsmanSortedAccordingToRuns;
 
-    final private static String[] IPLTeams = {"Mumbai Indians", "Sunrisers Hyderabad", "Pune Warriors",
+    private int[] finalMatchIds;
+
+    private List<Map.Entry<String,Double>> bowlerDataSorted;
+
+    final private String[] IPLTeams = {"Mumbai Indians", "Sunrisers Hyderabad", "Pune Warriors",
             "Rajasthan Royals", "Royal Challengers Bangalore", "Kolkata Knight Riders", "Gujarat Lions",
             "Rising Pune Supergiant", "Kochi Tuskers Kerala", "Kings XI Punjab", "Deccan Chargers",
             "Delhi Daredevils", "Rising Pune Supergiants", "Chennai Super Kings"};
 
     public static void main(String[] args) throws IOException {
-        List<Match> matches = getMatchesData();
-        List<Delivery> deliveries = getDeliveriesData();
+        IPLAnalyzer iplAnalyzerInstance = getIPLAnalyzerInstance();
+        List<Match> matches = iplAnalyzerInstance.getMatchesData();
+        List<Delivery> deliveries = iplAnalyzerInstance.getDeliveriesData();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while(true){
             System.out.println("What you want to analyze? Available Options:");
@@ -64,25 +75,25 @@ public class IPLAnalyzer {
             String input = br.readLine();
             switch (input) {
                 case "1":
-                    findTotalMatchesPlayedPerYear(matches.subList(1, matches.size()));
+                    iplAnalyzerInstance.findTotalMatchesPlayedPerYear(matches.subList(1, matches.size()));
                     break;
                 case "2":
-                    findTotalMatchesWonPerTeam(matches.subList(1, matches.size()));
+                    iplAnalyzerInstance.findTotalMatchesWonPerTeam(matches.subList(1, matches.size()));
                     break;
                 case "3":
-                    findExtraRunsConcededPerTeamIn2016(deliveries);
+                    iplAnalyzerInstance.findExtraRunsConcededPerTeamIn2016(deliveries);
                     break;
                 case "4":
-                    List<Map.Entry<String, Double>> topBowlersEconomy= getTopNEconomicBowlers(deliveries);
+                    List<Map.Entry<String, Double>> topBowlersEconomy= iplAnalyzerInstance.getTopNEconomicBowlers(deliveries);
                     for(Map.Entry<String, Double> entry: topBowlersEconomy){
                         System.out.println(entry.getKey() + " -> " + String.format("%.2f", entry.getValue()));
                     }
                     break;
                 case "5":
-                    findTopNBatsmanWithMostRuns(deliveries.subList(1, deliveries.size()));
+                    iplAnalyzerInstance.findTopNBatsmanWithMostRuns(deliveries.subList(1, deliveries.size()));
                     break;
                 case "6":
-                    findIplWinnerPerYear(matches.subList(1,matches.size()));
+                    iplAnalyzerInstance.findIplWinnerPerYear(matches.subList(1,matches.size()));
                     break;
                 case "q":
                     System.out.println("Exiting program.");
@@ -94,7 +105,7 @@ public class IPLAnalyzer {
         }
     }
 
-    private static List<Delivery> getDeliveriesData() throws IOException {
+    private List<Delivery> getDeliveriesData() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("io/mountblue/resources/deliveries.csv"));
         String line;
         List<Delivery> deliveries = new ArrayList<>();
@@ -118,7 +129,7 @@ public class IPLAnalyzer {
         return deliveries;
     }
 
-    private static List<Match> getMatchesData() throws IOException {
+    private List<Match> getMatchesData() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("io/mountblue/resources/matches.csv"));
         String line;
         List<Match> matches = new ArrayList<>();
@@ -136,7 +147,7 @@ public class IPLAnalyzer {
         return matches;
     }
 
-    private static void findTotalMatchesPlayedPerYear(List<Match> matches) throws IOException {
+    private void findTotalMatchesPlayedPerYear(List<Match> matches) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter the year, available data for 2008 - 2017 or press 0 for all years list");
         System.out.println("You can also press [p] to go to previous menu and [q] to exit program");
@@ -175,7 +186,7 @@ public class IPLAnalyzer {
         }
     }
 
-    private static void findTotalMatchesWonPerTeam(List<Match> matches) throws IOException {
+    private void findTotalMatchesWonPerTeam(List<Match> matches) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter the number aligned to the team, press [0] for all team list or press [p] to return to previous menu");
         printTeams();
@@ -224,7 +235,7 @@ public class IPLAnalyzer {
         }
     }
 
-    private static void findExtraRunsConcededPerTeamIn2016(List<Delivery> deliveries) throws IOException {
+    private void findExtraRunsConcededPerTeamIn2016(List<Delivery> deliveries) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter the number aligned to the team, press [0] for all teams list or press [p] to return to previous menu");
         printTeams();
@@ -266,7 +277,7 @@ public class IPLAnalyzer {
         }
     }
 
-    private static List<Map.Entry<String, Double>> getTopNEconomicBowlers(List<Delivery> deliveries) throws IOException {
+    private List<Map.Entry<String, Double>> getTopNEconomicBowlers(List<Delivery> deliveries) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("How much top economical bowlers you want to get? Press[0] for top 15 list");
         System.out.println("You can also press [p] to go to previous menu and [q] to exit program");
@@ -329,7 +340,7 @@ public class IPLAnalyzer {
         return null;
     }
 
-    private static void findTopNBatsmanWithMostRuns(List<Delivery> deliveries) throws IOException {
+    private void findTopNBatsmanWithMostRuns(List<Delivery> deliveries) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("How much top Batsman you want to get? or press [0] for top 10 batsman");
         System.out.println("You can also press [p] to go to previous menu and [q] to exit program");
@@ -370,7 +381,7 @@ public class IPLAnalyzer {
         }
     }
 
-    private static void findIplWinnerPerYear(List<Match> matches) throws IOException {
+    private void findIplWinnerPerYear(List<Match> matches) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter Year to get the winner of IPL [2008 - 2017] or press [0] for all years list");
         System.out.println("You can also press [p] to go to previous menu and [q] to exit program");
@@ -412,26 +423,21 @@ public class IPLAnalyzer {
         }
     }
 
-    private static void printTeams(){
+    private void printTeams(){
         int columns = 4;
-        int rows = (int) Math.ceil((double) IPLTeams.length / columns);
+        int row = (int)Math.ceil( (double)IPLTeams.length / columns);
         int maxIndexWidth = String.valueOf(IPLTeams.length).length();
-        int maxColumnWidth = 0;
-
-        for (String team : IPLTeams) {
-            maxColumnWidth = Math.max(maxColumnWidth, team.length());
+        int maxTeamWidth = 0;
+        for(String IPLTeam: IPLTeams){
+            maxTeamWidth = Math.max(maxTeamWidth,IPLTeam.length());
         }
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < columns; j++){
                 int index = i * columns + j;
-                if (index < IPLTeams.length) {
-                    String team = IPLTeams[index];
-                    String formattedIndex = String.format("(%0" + maxIndexWidth + "d)", index + 1);
-                    System.out.printf("%s %-" + (maxColumnWidth + 2) + "s", formattedIndex, team);
-                    if (j < columns - 1) {
-                        System.out.print("\t");
-                    }
+                if(index < IPLTeams.length){
+                    String formattedIndex = String.format("(%0" + maxIndexWidth + "d)", index);
+                    System.out.printf("%s %-" + (maxTeamWidth + 2) + "s \t", formattedIndex, IPLTeams[index]);
                 }
             }
             System.out.println();
