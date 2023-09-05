@@ -7,6 +7,16 @@ public class Match {
    private String team2;
    private String winnerTeam;
 
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    private String venue;
+
 
     public String getMatchId() {
         return matchId;

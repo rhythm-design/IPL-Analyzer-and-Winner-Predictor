@@ -28,6 +28,7 @@ public class IPLAnalyzer {
     private final int MATCH_TEAM1 = 4;
     private final int MATCH_TEAM2 = 5;
     private final int MATCH_WINNER_TEAM = 10;
+    private final int MATCH_VENUE = 2;
 
     private final int DELIVERY_MATCH_ID = 0;
     private final int DELIVERY_TEAM1 = 2;
@@ -54,6 +55,8 @@ public class IPLAnalyzer {
 
     private List<Map.Entry<String,Double>> bowlerDataSorted;
 
+    private Map<String, Map<String,Integer>> playerScoresByVenue;
+
     final private String[] IPLTeams = {"Mumbai Indians", "Sunrisers Hyderabad", "Pune Warriors",
             "Rajasthan Royals", "Royal Challengers Bangalore", "Kolkata Knight Riders", "Gujarat Lions",
             "Rising Pune Supergiant", "Kochi Tuskers Kerala", "Kings XI Punjab", "Deccan Chargers",
@@ -71,7 +74,8 @@ public class IPLAnalyzer {
                     "(3) For the year 2016 get the extra runs conceded per team.\n" +
                     "(4) For the year 2015 get the top economical bowlers.\n" +
                     "(5) Top N batsman with most runs. \n" +
-                    "(6) IPL Winner of the year");
+                    "(6) IPL Winner of the year. \n" +
+                    "(7) Highest runs scored by Batsman in each venue for year 2015");
             String input = br.readLine();
             switch (input) {
                 case "1":
@@ -94,6 +98,9 @@ public class IPLAnalyzer {
                     break;
                 case "6":
                     iplAnalyzerInstance.findIplWinnerPerYear(matches.subList(1,matches.size()));
+                    break;
+                case "7":
+                    iplAnalyzerInstance.highestScoredPlayerByVenue(matches.subList(1,matches.size()), deliveries.subList(1, deliveries.size()));
                     break;
                 case "q":
                     System.out.println("Exiting program.");
@@ -141,6 +148,7 @@ public class IPLAnalyzer {
             match.setTeam1(matchData[MATCH_TEAM1]);
             match.setTeam2(matchData[MATCH_TEAM2]);
             match.setWinnerTeam(matchData[MATCH_WINNER_TEAM]);
+            match.setVenue(matchData[MATCH_VENUE]);
             matches.add(match);
         }
         br.close();
@@ -441,6 +449,46 @@ public class IPLAnalyzer {
                 }
             }
             System.out.println();
+        }
+    }
+
+    private void highestScoredPlayerByVenue(List<Match> matches, List<Delivery> deliveries){
+        if(playerScoresByVenue == null){
+            playerScoresByVenue = new HashMap<>();
+            for(Match match: matches){
+                if(Integer.parseInt(match.getYear()) == 2015){
+                    int matchId = Integer.parseInt(match.getMatchId());
+                    String venueOfMatch = match.getVenue();
+                    HashMap<String,Integer> playerScores = new HashMap<>();
+                    for(Delivery delivery: deliveries){
+                        if(Integer.parseInt(delivery.getMatchId()) == matchId){
+                            int batsmanRunOnDelivery = Integer.parseInt(delivery.getBatsmanRuns());
+                            playerScores.put(delivery.getBatsman(), playerScores.getOrDefault(delivery.getBatsman(), 0) + batsmanRunOnDelivery);
+                        }
+                    }
+                    if(playerScoresByVenue.containsKey(venueOfMatch)){
+                        Map<String,Integer> venueScores = playerScoresByVenue.get(venueOfMatch);
+                        for(String playerScore: playerScores.keySet()){
+                            if(venueScores.containsKey(playerScore)){
+                                venueScores.put(playerScore, venueScores.get(playerScore) + playerScores.get(playerScore));
+                            }else{
+                                venueScores.put(playerScore, playerScores.get(playerScore));
+                            }
+                        }
+                        playerScoresByVenue.put(venueOfMatch, venueScores);
+                    }else{
+                        playerScoresByVenue.put(venueOfMatch, playerScores);
+                    }
+                }
+
+            }
+        }
+        for(String venue : playerScoresByVenue.keySet()){
+            Map<String,Integer> venueMap = playerScoresByVenue.get(venue);
+            List<Map.Entry<String,Integer>> venueEntry = new ArrayList<>(venueMap.entrySet());
+            venueEntry.sort( (a,b) -> b.getValue() - a.getValue());
+            System.out.println(venue);
+            System.out.println("Highest Runs Scored by: " + venueEntry.get(0).getKey() + " Score -> " + venueEntry.get(0).getValue());
         }
     }
 }
