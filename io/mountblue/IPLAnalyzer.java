@@ -284,7 +284,7 @@ public class IPLAnalyzer {
                         }
                         if(!delivery.getWideRuns().equals("0") || !delivery.getNoBallRuns().equals("0")){
                             int[] bowlerData = bowlerAnalysis.get(delivery.getBowlerName());
-                            bowlerData[0] += (Integer.parseInt(delivery.getWideRuns()) + Integer.parseInt(delivery.getNoBallRuns()));
+                            bowlerData[0] += (Integer.parseInt(delivery.getWideRuns()) + Integer.parseInt(delivery.getNoBallRuns()) + Integer.parseInt(delivery.getBatsmanRuns()));
                             bowlerAnalysis.put(delivery.getBowlerName(), bowlerData);
                         }else if(!delivery.getByeRuns().equals("0") || !delivery.getLegByeRuns().equals("0")){
                             int[] bowlerData = bowlerAnalysis.get(delivery.getBowlerName());
