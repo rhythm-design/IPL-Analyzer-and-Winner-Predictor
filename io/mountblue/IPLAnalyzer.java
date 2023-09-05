@@ -38,7 +38,6 @@ public class IPLAnalyzer {
 
     private static Map<String,Integer> extraRunByTeams;
 
-    static Map<String,Integer> cricketersRuns;
     static List<Map.Entry<String,Integer>> batsmanSortedAccordingToRuns;
 
     static int[] finalMatchIds;
@@ -139,13 +138,13 @@ public class IPLAnalyzer {
 
     private static void findTotalMatchesPlayedPerYear(List<Match> matches) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter the year, available data for 2008 - 2017");
+        System.out.println("Enter the year, available data for 2008 - 2017 or press 0 for all years list");
         System.out.println("You can also press [p] to go to previous menu and [q] to exit program");
         String input = br.readLine();
 
         try{
             int year = Integer.parseInt(input);
-            if(year >= 2008 && year <= 2017){
+            if(year == 0 || year >= 2008 && year <= 2017){
                 if(matchesPlayedPerYear == null){
                     matchesPlayedPerYear = new int[10];  //2008-2017
                     for(Match match: matches){
@@ -153,7 +152,14 @@ public class IPLAnalyzer {
                         matchesPlayedPerYear[matchYear - 2008]++;
                     }
                 }
-                System.out.println(String.format("IPL Matches played in %s year is: %s \n", year, matchesPlayedPerYear[year - 2008]));
+                if(year == 0){
+                    int startYear = 2008;
+                    for(int matchesPlayedInYear: matchesPlayedPerYear){
+                        System.out.println("Year: " + startYear++ + " Matches Played " + matchesPlayedInYear);
+                    }
+                }else{
+                    System.out.println(String.format("IPL Matches played in %s year is: %s \n", year, matchesPlayedPerYear[year - 2008]));
+                }
             }else{
                 System.out.println("Not a valid year input, please try again");
             }
@@ -171,24 +177,38 @@ public class IPLAnalyzer {
 
     private static void findTotalMatchesWonPerTeam(List<Match> matches) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter the number aligned to the team or press [p] to return to previous menu");
+        System.out.println("Enter the number aligned to the team, press [0] for all team list or press [p] to return to previous menu");
         printTeams();
         String input = br.readLine();
         try{
             int teamIdx = Integer.parseInt(input);
-            if(teamIdx >=1 && teamIdx <=14){
+            if(teamIdx >=0 && teamIdx <=14){
                 if(matchesWonByEachTeam == null){
                     matchesWonByEachTeam = new HashMap<>();
                     matchesPlayedByEachTeam = new HashMap<>();
                     for(Match match: matches){
                         matchesPlayedByEachTeam.put(match.getTeam1(), matchesPlayedByEachTeam.getOrDefault(match.getTeam1(), 0) + 1);
                         matchesPlayedByEachTeam.put(match.getTeam2(), matchesPlayedByEachTeam.getOrDefault(match.getTeam2(), 0) + 1);
-                        matchesWonByEachTeam.put(match.getWinnerTeam(), matchesWonByEachTeam.getOrDefault(match.getWinnerTeam(), 0) + 1);
+                        if(!match.getWinnerTeam().isEmpty())
+                            matchesWonByEachTeam.put(match.getWinnerTeam(), matchesWonByEachTeam.getOrDefault(match.getWinnerTeam(), 0) + 1);
                     }
                 }
-                String team = IPLTeams[Integer.parseInt(input) - 1];
-                System.out.println(String.format("Total Matches played by %s: %s \nTotal Matches Won by %s: %s \n", team, matchesPlayedByEachTeam.get(team), team, matchesWonByEachTeam.get(team)));
-
+                if(teamIdx == 0){
+                    for(String IplTeam: matchesWonByEachTeam.keySet()){
+                        System.out.println(String.format("Total Matches played by %s: %s \nTotal Matches Won by %s: %s \n",
+                                IplTeam,
+                                matchesPlayedByEachTeam.get(IplTeam),
+                                IplTeam,
+                                matchesWonByEachTeam.get(IplTeam)));
+                    }
+                }else{
+                    String team = IPLTeams[teamIdx - 1];
+                    System.out.println(String.format("Total Matches played by %s: %s \nTotal Matches Won by %s: %s \n",
+                            team,
+                            matchesPlayedByEachTeam.get(team),
+                            team,
+                            matchesWonByEachTeam.get(team)));
+                }
             }else{
                 System.out.println("Please Enter the Number between 1 to 14 inclusively or press [q] to exit program");
             }
@@ -206,12 +226,12 @@ public class IPLAnalyzer {
 
     private static void findExtraRunsConcededPerTeamIn2016(List<Delivery> deliveries) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter the number aligned to the team or press [p] to return to previous menu");
+        System.out.println("Enter the number aligned to the team, press [0] for all teams list or press [p] to return to previous menu");
         printTeams();
         String input = br.readLine();
         try{
             int teamIdx = Integer.parseInt(input);
-            if(teamIdx >=1 && teamIdx <=14){
+            if(teamIdx >=0 && teamIdx <=14){
                 if(extraRunByTeams == null){
                     extraRunByTeams = new HashMap<>();
                     for(int i = deliveries.size() - 1; i >= 0; i--){
@@ -223,8 +243,14 @@ public class IPLAnalyzer {
                         extraRunByTeams.put(battingTeam,extraRunByTeams.getOrDefault(battingTeam, 0) + extraRuns);
                     }
                 }
-                String team = IPLTeams[teamIdx - 1];
-                System.out.println("Extra runs conceded by team " + team + " is: " + extraRunByTeams.get(team));
+                if(teamIdx == 0){
+                    for(String iplTeam: extraRunByTeams.keySet()){
+                        System.out.println("Extra runs conceded by team " + iplTeam + " is: " + extraRunByTeams.get(iplTeam));
+                    }
+                }else{
+                    String team = IPLTeams[teamIdx - 1];
+                    System.out.println("Extra runs conceded by team " + team + " is: " + extraRunByTeams.get(team));
+                }
             }else{
                 System.out.println("Please Enter the Number between 1 to 14 inclusively or press [q] to exit program");
             }
@@ -242,13 +268,13 @@ public class IPLAnalyzer {
 
     private static List<Map.Entry<String, Double>> getTopNEconomicBowlers(List<Delivery> deliveries) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("How much top economical bowlers you want to get?");
+        System.out.println("How much top economical bowlers you want to get? Press[0] for top 15 list");
         System.out.println("You can also press [p] to go to previous menu and [q] to exit program");
         String input = br.readLine();
 
         try{
             int topNEconomicBowlers = Integer.parseInt(input);
-            if(topNEconomicBowlers >=1 && topNEconomicBowlers <=100){
+            if(topNEconomicBowlers >=0 && topNEconomicBowlers <=100){
                 if(bowlerDataSorted == null){
                     Map<String,int[]> bowlerAnalysis = new HashMap<>();
                     for(int i = 122712; i <= 136363; i++){
@@ -280,7 +306,12 @@ public class IPLAnalyzer {
                     bowlerDataSorted = new ArrayList<>(bowlersEconomyData.entrySet());
                     bowlerDataSorted.sort(Map.Entry.comparingByValue());
                 }
-                return bowlerDataSorted.subList(0,topNEconomicBowlers);
+                if(topNEconomicBowlers == 0){
+                    return bowlerDataSorted.subList(0,15);
+                }else{
+                    return bowlerDataSorted.subList(0,topNEconomicBowlers);
+                }
+
             }else{
                 System.out.println("Not a valid year input between 1 to 100 inclusively, please try again");
             }
@@ -300,15 +331,15 @@ public class IPLAnalyzer {
 
     private static void findTopNBatsmanWithMostRuns(List<Delivery> deliveries) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("How much top Batsman you want to get?");
+        System.out.println("How much top Batsman you want to get? or press [0] for top 10 batsman");
         System.out.println("You can also press [p] to go to previous menu and [q] to exit program");
         String input = br.readLine();
 
         try{
             int topNBatsman = Integer.parseInt(input);
-            if(topNBatsman >= 1 && topNBatsman <= 461){
-                if(cricketersRuns == null){
-                    cricketersRuns = new HashMap<>();
+            if(topNBatsman >= 0 && topNBatsman <= 461){
+                if(batsmanSortedAccordingToRuns == null){
+                    Map<String,Integer> cricketersRuns = new HashMap<>();
                     batsmanSortedAccordingToRuns = new ArrayList<>();
                     for(Delivery delivery: deliveries){
                         int batsmanRuns = Integer.parseInt(delivery.getBatsmanRuns());
@@ -319,7 +350,11 @@ public class IPLAnalyzer {
                     entryList.sort((a,b)-> b.getValue().compareTo(a.getValue()));
                     batsmanSortedAccordingToRuns.addAll(entryList);
                 }
-                System.out.println("Top " + topNBatsman + "batsman -> "+ batsmanSortedAccordingToRuns.subList(0,topNBatsman));
+                if(topNBatsman == 0){
+                    System.out.println("Top " + topNBatsman + "batsman -> "+ batsmanSortedAccordingToRuns.subList(0,10));
+                }else{
+                    System.out.println("Top " + topNBatsman + "batsman -> "+ batsmanSortedAccordingToRuns.subList(0,topNBatsman));
+                }
             }else{
                 System.out.println("Not a valid year input between 1 to 461 inclusively, please try again");
             }
@@ -337,13 +372,13 @@ public class IPLAnalyzer {
 
     private static void findIplWinnerPerYear(List<Match> matches) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter Year to get the winner of IPL [2008 - 2017]");
+        System.out.println("Enter Year to get the winner of IPL [2008 - 2017] or press [0] for all years list");
         System.out.println("You can also press [p] to go to previous menu and [q] to exit program");
         String input = br.readLine();
 
         try{
             int year = Integer.parseInt(input);
-            if(year >= 2008 && year <= 2017){
+            if(year == 0 || year >= 2008 && year <= 2017){
                 if(finalMatchIds == null){
                     finalMatchIds = new int[10];
                     for(Match match: matches){
@@ -352,9 +387,16 @@ public class IPLAnalyzer {
                         finalMatchIds[yearPlayed - 2008] = Math.max(matchId, finalMatchIds[yearPlayed -2008]);
                     }
                 }
-                int matchId = finalMatchIds[year - 2008];
-                String ans = matches.get(matchId - 1).getWinnerTeam();
-                System.out.println(String.format("IPL winner for year %s is: %s \n", year, ans));
+                if(year == 0){
+                    int iplStartYear = 2008;
+                    for(int finalMatchId: finalMatchIds){
+                        System.out.println(String.format("IPL winner for year %s is: %s \n", iplStartYear++, matches.get(finalMatchId - 1).getWinnerTeam()));
+                    }
+                }else{
+                    int matchId = finalMatchIds[year - 2008];
+                    String ans = matches.get(matchId - 1).getWinnerTeam();
+                    System.out.println(String.format("IPL winner for year %s is: %s ", year, ans));
+                }
             }else{
                 System.out.println("Not a valid year input, please try again");
             }

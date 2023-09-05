@@ -1,16 +1,12 @@
 package io.mountblue;
 
 public class Match {
-
    private String matchId;
-
    private String year;
-
    private String team1;
-
    private String team2;
-
    private String winnerTeam;
+
 
     public String getMatchId() {
         return matchId;
